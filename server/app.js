@@ -7,6 +7,9 @@ const morgan = require("morgan");
 const connectDB = require("./config/db");
 const healthRoutes = require("./routes/healthRoutes");
 
+const notFound = require("./middleware/notFound");
+const errorHandler = require("./middleware/errorHandler");
+
 const app = express();
 
 // Database Connection
@@ -24,5 +27,9 @@ app.use("/api/health", healthRoutes);
 app.get("/", (req, res) => {
   res.send("DeepScan AI Backend Running...");
 });
+
+// Error Handling
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;
