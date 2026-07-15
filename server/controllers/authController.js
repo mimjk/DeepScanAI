@@ -1,5 +1,9 @@
 const asyncHandler = require("../middleware/asyncHandler");
-const { registerUser, loginUser } = require("../services/authService");
+const {
+  registerUser,
+  loginUser,
+  getUserProfile,
+} = require("../services/authService");
 
 const generateToken = require("../utils/generateToken");
 
@@ -41,7 +45,18 @@ const login = asyncHandler(async (req, res) => {
   });
 });
 
+const getProfile = asyncHandler(async (req, res) => {
+  const user = await getUserProfile(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    message: "Profile fetched successfully",
+    data: user,
+  });
+});
+
 module.exports = {
   register,
   login,
+  getProfile,
 };
