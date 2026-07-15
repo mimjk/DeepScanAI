@@ -23,6 +23,25 @@ const registerUser = async ({ name, email, password }) => {
   };
 };
 
+const loginUser = async ({ email, password }) => {
+  // Email দিয়ে user খুঁজবে
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user) {
+    throw new Error("Invalid email or password");
+  }
+
+  // Password check
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
+    throw new Error("Invalid email or password");
+  }
+
+  return user;
+};
+
 module.exports = {
   registerUser,
+  loginUser,
 };
